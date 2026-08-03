@@ -114,14 +114,35 @@ public class Crops {
 			throw new IllegalStateException("Need to run the runCrops method first.");
 		}
 
-		// Listing the data from the first map
+		//?? Listing the data from the first map
 		List<Map.Entry<Double, PeltResult>> entryList = new ArrayList<>(this.results.entrySet());
 
+		// Filter out trivial m = 0 results (where penalty was too huge to form any breakpoint)
+				List<Map.Entry<Double, PeltResult>> validEntries = new ArrayList<>();
+				for (Map.Entry<Double, PeltResult> entry : entryList) {
+					if (entry.getValue().getChangePoints() != null && !entry.getValue().getChangePoints().isEmpty()) {
+						validEntries.add(entry);
+					}
+				}
+
+				// ???Fallback: If all penalties in range produced 0 breakpoints, return the first result
+				if (validEntries.isEmpty()) {
+					System.out.println("CROPS Warning: All penalty ranges produced 0 breakpoints. Returning upper boundary.");
+					return entryList.get(0).getValue();
+				}
+				
+				
 		// Breakpoint count should be X axis
 		// Reordering the list from smallest to largest
 		Collections.reverse(entryList);
 
 		int size = entryList.size();
+		
+		if (size < 3) {
+	        Map.Entry<Double, PeltResult> midEntry = entryList.get(size / 2);
+	        return midEntry.getValue();
+	    }
+		
 		double[] xPoints = new double[size]; // Breakpoint Count
 		double[] yPoints = new double[size]; // Beta/Penalty Value
 
@@ -133,9 +154,9 @@ public class Crops {
 
 		// Structuring the KneeLocator Class
 		KneeLocator kl = new KneeLocator(xPoints, yPoints, 1.0, // Sensitivity (Standart = 1.0)
-				Enums.CURVE_TYPE.CONVEX, Enums.DIRECTION.DECREASING, Enums.INTERPOLATION_METHOD.POLYNOMIAL, false, // Online
+				Enums.CURVE_TYPE.CONCAVE, Enums.DIRECTION.DECREASING, Enums.INTERPOLATION_METHOD.POLYNOMIAL, false, // Online
 																													// mode
-				1 // Polynomial degree
+				3 // Polynomial degree
 		);
 
 		// Getting the most optimal knee
@@ -181,5 +202,6 @@ public class Crops {
 
 		return optimalEntry.getValue();
 	}
+	
 
 }

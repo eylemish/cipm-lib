@@ -43,7 +43,7 @@ public class CostNormal implements BaseCost {
 			return 0.0; // not enough points
 
 		// Covariance matrix calculation
-		RealMatrix covarianceMatrix = calculateCovariance(start, end);
+		RealMatrix covarianceMatrix = calculateMleCovariance(start, end);
 
 		// Regularization
 		for (int i = 0; i < nDims; i++) {
@@ -68,17 +68,37 @@ public class CostNormal implements BaseCost {
 	 * @param end   The ending index.
 	 * @return A RealMatrix as the covariance structure.
 	 */
-	private RealMatrix calculateCovariance(int start, int end) {
+	private RealMatrix calculateMleCovariance(int start, int end) {
 		int n = end - start;
+		double[] means = new double[nDims];
 
-		// Calculate the segment average for each feature.
-		double[][] subArray = new double[n][nDims];
+		// 1. Calculating column means
 		for (int i = start; i < end; i++) {
-			System.arraycopy(signal[i], 0, subArray[i - start], 0, nDims);
+			for (int d = 0; d < nDims; d++) {
+				means[d] += signal[i][d];
+			}
+		}
+		for (int d = 0; d < nDims; d++) {
+			means[d] /= n;
 		}
 
-		Covariance cov = new Covariance(subArray, false);
-		return cov.getCovarianceMatrix();
+		// 2. Calculating MLE covariance matrix (divided by n - 1)
+		double[][] covData = new double[nDims][nDims];
+		for (int i = start; i < end; i++) {
+			for (int d1 = 0; d1 < nDims; d1++) {
+				for (int d2 = 0; d2 < nDims; d2++) {
+					covData[d1][d2] += (signal[i][d1] - means[d1]) * (signal[i][d2] - means[d2]);
+				}
+			}
+		}
+
+		for (int d1 = 0; d1 < nDims; d1++) {
+			for (int d2 = 0; d2 < nDims; d2++) {
+				covData[d1][d2] /= n;
+			}
+		}
+
+		return new Array2DRowRealMatrix(covData);
 	}
 
 }
