@@ -9,11 +9,6 @@ import java.util.function.ToDoubleFunction;
  *
  */
 public interface ConfidenceIntervalStrategy {
-	
-//	double[] calculate(BootstrapStatistic statistic);
-	
-	//public double[] calculateInterval(double[] data, double alpha, int bootstrapCount);
-	
 	/**
 	 * Calculates the bootstrap confidence interval.
 	 * 

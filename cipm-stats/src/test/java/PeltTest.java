@@ -172,8 +172,8 @@ public class PeltTest {
         Pelt pelt = new Pelt("l2", null, 2, 1, null);
         List<Integer> breakpoints = pelt.fitPredict(signal, 1.0);
 
-        assertTrue(breakpoints.contains(100), "100. index'te breakpoint olmalı");
-        assertTrue(breakpoints.contains(200), "200. index'te breakpoint olmalı");
+        assertTrue(breakpoints.contains(100));
+        assertTrue(breakpoints.contains(200));
     }
 
     
