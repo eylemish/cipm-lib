@@ -9,9 +9,11 @@ import java.util.TreeMap;
 import com.github.shravanasati.kneedle4j.*;
 
 /**
- * Implements the CROPS (Changepoint Range Over a Penalty Spectrum) algorithm based on Haynes, Eckley, and 
- * Fearnhead (2014). Runs PELT recursively across a penalty interval to find all optimal segmentations and 
- * uses the Kneedle algorithm to detect the most optimal penalty (elbow point).
+ * Implements the CROPS (Changepoint Range Over a Penalty Spectrum) algorithm
+ * based on Haynes, Eckley, and Fearnhead (2014). Runs PELT recursively across a
+ * penalty interval to find all optimal segmentations and uses the Kneedle
+ * algorithm to detect the most optimal penalty (elbow point).
+ * 
  * @author ezgiyircali
  *
  */
@@ -26,10 +28,11 @@ public class Crops {
 	}
 
 	/**
-	 *Runs the CROPS algorithm over a specified penalty spectrum [minPenalty, maxPenalty].
-	 *Executes PELT for the boundary penalties first, then recursively searches for all distinct optimal segmentations within the interval.
+	 * Runs the CROPS algorithm over a specified penalty spectrum [minPenalty,
+	 * maxPenalty]. Executes PELT for the boundary penalties first, then recursively
+	 * searches for all distinct optimal segmentations within the interval.
 	 *
-	 * @param signal The input The input multi-dimensional data.
+	 * @param signal     The input The input multi-dimensional data.
 	 * @param minPenalty The minimum penalty value.
 	 * @param maxPenalty The maximum penalty value.
 	 * @return A mapping each calculated penalty to its corresponding PeltResult.
@@ -40,7 +43,13 @@ public class Crops {
 
 		// First running the pelt for minimum and maximum values.
 		PeltResult minRes = pelt.fitPredictWithCost(signal, minPenalty);
+
 		PeltResult maxRes = pelt.fitPredictWithCost(signal, maxPenalty);
+
+		while (maxRes.getChangePoints().isEmpty() && maxPenalty > minPenalty) {
+			maxPenalty = maxPenalty / 2.0;
+			maxRes = pelt.fitPredictWithCost(signal, maxPenalty);
+		}
 
 		results.put(minPenalty, minRes);
 		results.put(maxPenalty, maxRes);
@@ -52,9 +61,10 @@ public class Crops {
 
 	/**
 	 * Recursively evaluates penalty values between beta0 and beta1.
+	 * 
 	 * @param signal The input signal matrix.
-	 * @param beta0 Lower boundary penalty.
-	 * @param beta1 Upper boundary penalty.
+	 * @param beta0  Lower boundary penalty.
+	 * @param beta1  Upper boundary penalty.
 	 */
 	private void solve(double[][] signal, double beta0, double beta1) {
 
@@ -103,46 +113,49 @@ public class Crops {
 	}
 
 	/**
-	 * Identifies the most optimal penalty and segmentation result using the Kneedle algorithm.
-	 * Maps change-point count on the X axis against penalty values on the Y axis to locate the elbow point. 
-	 * Uses a nearest neighbor strategy if CROPS skipped the exact breakpoint count.
+	 * Identifies the most optimal penalty and segmentation result using the Kneedle
+	 * algorithm. Maps change-point count on the X axis against penalty values on
+	 * the Y axis to locate the elbow point. Uses a nearest neighbor strategy if
+	 * CROPS skipped the exact breakpoint count.
 	 * 
-	 * @return The optimal Pelt Result and segmentation result using the Kneedle algorithm.
+	 * @return The optimal Pelt Result and segmentation result using the Kneedle
+	 *         algorithm.
 	 */
 	public PeltResult getOptimalResultWithKneedle() {
 		if (this.results == null || this.results.isEmpty()) {
 			throw new IllegalStateException("Need to run the runCrops method first.");
 		}
 
-		//?? Listing the data from the first map
+		// ?? Listing the data from the first map
 		List<Map.Entry<Double, PeltResult>> entryList = new ArrayList<>(this.results.entrySet());
 
-		// Filter out trivial m = 0 results (where penalty was too huge to form any breakpoint)
-				List<Map.Entry<Double, PeltResult>> validEntries = new ArrayList<>();
-				for (Map.Entry<Double, PeltResult> entry : entryList) {
-					if (entry.getValue().getChangePoints() != null && !entry.getValue().getChangePoints().isEmpty()) {
-						validEntries.add(entry);
-					}
-				}
+		// Filter out trivial m = 0 results (where penalty was too huge to form any
+		// breakpoint)
+		List<Map.Entry<Double, PeltResult>> validEntries = new ArrayList<>();
+		for (Map.Entry<Double, PeltResult> entry : entryList) {
+			if (entry.getValue().getChangePoints() != null && !entry.getValue().getChangePoints().isEmpty()) {
+				validEntries.add(entry);
+			}
+		}
 
-				// ???Fallback: If all penalties in range produced 0 breakpoints, return the first result
-				if (validEntries.isEmpty()) {
-					System.out.println("CROPS Warning: All penalty ranges produced 0 breakpoints. Returning upper boundary.");
-					return entryList.get(0).getValue();
-				}
-				
-				
+		// ???Fallback: If all penalties in range produced 0 breakpoints, return the
+		// first result
+		if (validEntries.isEmpty()) {
+			System.out.println("CROPS Warning: All penalty ranges produced 0 breakpoints. Returning upper boundary.");
+			return entryList.get(0).getValue();
+		}
+
 		// Breakpoint count should be X axis
 		// Reordering the list from smallest to largest
 		Collections.reverse(entryList);
 
 		int size = entryList.size();
-		
+
 		if (size < 3) {
-	        Map.Entry<Double, PeltResult> midEntry = entryList.get(size / 2);
-	        return midEntry.getValue();
-	    }
-		
+			Map.Entry<Double, PeltResult> midEntry = entryList.get(size / 2);
+			return midEntry.getValue();
+		}
+
 		double[] xPoints = new double[size]; // Breakpoint Count
 		double[] yPoints = new double[size]; // Beta/Penalty Value
 
@@ -168,7 +181,7 @@ public class Crops {
 		if (optimalKneeX != null) {
 			int targetKneeCount = (int) Math.round(optimalKneeX);
 
-			//Searching an exact match for the recommended breakpoint count
+			// Searching an exact match for the recommended breakpoint count
 			for (Map.Entry<Double, PeltResult> entry : entryList) {
 				if (entry.getValue().getChangePoints().size() == targetKneeCount) {
 					optimalEntry = entry;
@@ -176,7 +189,7 @@ public class Crops {
 				}
 			}
 
-			//Selecting the nearest neighbor if CROPS skipped this specific count
+			// Selecting the nearest neighbor if CROPS skipped this specific count
 			if (optimalEntry == null) {
 				int minDiff = Integer.MAX_VALUE;
 				for (Map.Entry<Double, PeltResult> entry : entryList) {
@@ -203,5 +216,15 @@ public class Crops {
 		return optimalEntry.getValue();
 	}
 	
+	public double getOptimalPenaltyWithKneedle() {
+	    PeltResult optimalResult = getOptimalResultWithKneedle();
+	    for (Map.Entry<Double, PeltResult> entry : results.entrySet()) {
+	        if (entry.getValue() == optimalResult) {
+	            return entry.getKey();
+	        }
+	    }
+	    return -1.0;
+	}
+
 
 }
