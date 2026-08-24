@@ -1,7 +1,6 @@
 package cipm.stats.pelt;
 
 import org.apache.commons.math3.linear.*;
-import org.apache.commons.math3.stat.correlation.Covariance;
 
 /**
  * Implements the cost function based on the Gaussian (Normal) distribution

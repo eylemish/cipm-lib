@@ -215,16 +215,21 @@ public class Crops {
 
 		return optimalEntry.getValue();
 	}
-	
-	public double getOptimalPenaltyWithKneedle() {
-	    PeltResult optimalResult = getOptimalResultWithKneedle();
-	    for (Map.Entry<Double, PeltResult> entry : results.entrySet()) {
-	        if (entry.getValue() == optimalResult) {
-	            return entry.getKey();
-	        }
-	    }
-	    return -1.0;
-	}
 
+	/**
+	 * Identifies the optimal penalty (beta) value corresponding to the optimal
+	 * PeltResult.
+	 * 
+	 * @return
+	 */
+	public double getOptimalPenaltyWithKneedle() {
+		PeltResult optimalResult = getOptimalResultWithKneedle();
+		for (Map.Entry<Double, PeltResult> entry : results.entrySet()) {
+			if (entry.getValue() == optimalResult) {
+				return entry.getKey();
+			}
+		}
+		return -1.0;
+	}
 
 }

@@ -56,12 +56,11 @@ public class OptimalChangepointDetector {
 			throw new IllegalArgumentException("Cleaned data cannot be null or empty.");
 		}
 
-		// Convert List<Double> to 2D signal array for PELT.
-		// Forward-Fill: carrying the last valid value forward to fill NaNs.
+		// Converting List<Double> to 2D signal array for PELT.
 		double[][] signal = new double[cleanedData.size()][1];
 		double lastValidValue = 0.0;
 
-		// Find initial fallback value if series starts with NaN
+		// Finding initial fallback value if series starts with NaN
 		for (Double val : cleanedData) {
 			if (val != null && !Double.isNaN(val)) {
 				lastValidValue = val;
@@ -74,7 +73,7 @@ public class OptimalChangepointDetector {
 			if (val != null && !Double.isNaN(val)) {
 				lastValidValue = val;
 			}
-			signal[i][0] = lastValidValue; // Forward fill
+			signal[i][0] = lastValidValue;
 		}
 
 		// Initializing PELT and CROPS

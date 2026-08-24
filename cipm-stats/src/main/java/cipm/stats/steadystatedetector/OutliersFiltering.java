@@ -67,7 +67,7 @@ public class OutliersFiltering {
 			// Median and Percentile Calculation
 			percentile.setData(windowData);
 			double median = percentile.evaluate(50.0);
-			double p90 = percentile.evaluate(90.0);
+			double p90 = percentile.evaluate(99.0);
 			double p10 = percentile.evaluate(10.0);
 
 			// Tukey formula: median ± 3 * (90% ile - 10% ile)

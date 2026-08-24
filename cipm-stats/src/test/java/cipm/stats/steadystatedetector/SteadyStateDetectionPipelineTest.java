@@ -43,8 +43,6 @@ class SteadyStateDetectionPipelineTest {
         List<Double> sampleData500 = generate500SampleData();
         SteadyStateResult result500 = pipeline.processFork(sampleData500);
         
-
-        // Assertions to verify the result object and its properties are correctly populated
         assertNotNull(result500, "Pipeline result should not be null.");
         assertNotNull(result500.getStableMeasurements(), "Stable measurements list should not be null.");
 
@@ -89,7 +87,7 @@ class SteadyStateDetectionPipelineTest {
         }
 
         // Subsequent iterations: Steady-state phase
-        for (int i = 200; i < 600; i++) {
+        for (int i = 200; i < 500; i++) {
             data.add(50.0 + random.nextDouble() * 5.0);
         }
 
@@ -100,12 +98,10 @@ class SteadyStateDetectionPipelineTest {
         List<Double> data = new ArrayList<>();
         Random random = new Random(12345);
 
-        // First 200 iterations
         for (int i = 0; i < 200; i++) {
             data.add(100.0 + random.nextDouble() * 50.0);
         }
 
-        // Subsequent iterations: Steady-state phase
         for (int i = 200; i < 1000; i++) {
             data.add(50.0 + random.nextDouble() * 5.0);
         }
