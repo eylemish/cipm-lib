@@ -56,7 +56,7 @@ public class SteadyStateDetectionPipeline {
 		PeltResult peltResult = changepointDetector.detect(cleanedData);
 
 		// Step 5: Evaluating segments and extracting steady-state data
-		SteadyStateResult result = steadyStateDetector.evaluate(measurementData, peltResult);
+		SteadyStateResult result = steadyStateDetector.evaluate(cleanedData, peltResult);
 
 		return result;
 	}
