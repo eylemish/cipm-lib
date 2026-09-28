@@ -26,6 +26,22 @@
 			<artifactId>kneedle4j</artifactId>
 			<version>v0.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.knowm.xchart</groupId>
+			<artifactId>xchart</artifactId>
+			<version>4.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>de.erichseifert.vectorgraphics2d</groupId>
+			<artifactId>VectorGraphics2D</artifactId>
+			<version>0.13</version>
+		</dependency>
+		<dependency>
+			<groupId>de.rototor.pdfbox</groupId>
+			<artifactId>graphics2d</artifactId>
+			<version>3.0.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>
