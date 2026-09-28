@@ -176,7 +176,7 @@ public class CropsAlgorithmTest {
                 double optimalPenalty = crops.getOptimalPenaltyWithKneedle();
                 List<Integer> breakpoints = optimalResult.getChangePoints();
 
-                System.out.println("--- CROPS Spectrum [2.0, 1000.0] ---");
+                System.out.println("--- CROPS [2.0, 1000.0] ---");
                 System.out.println("Optimal Penalty (Beta) : " + optimalPenalty);
                 System.out.println("Breakpoint Count       : " + breakpoints.size());
                 System.out.println("Breakpoints List       : " + breakpoints);
@@ -194,7 +194,7 @@ public class CropsAlgorithmTest {
                 double optimalPenalty = crops.getOptimalPenaltyWithKneedle();
                 List<Integer> breakpoints = optimalResult.getChangePoints();
 
-                System.out.println("--- CROPS Spectrum [2.0, 10000.0] ---");
+                System.out.println("--- CROPS [2.0, 10000.0] ---");
                 System.out.println("Optimal Penalty (Beta) : " + optimalPenalty);
                 System.out.println("Breakpoint Count       : " + breakpoints.size());
                 System.out.println("Breakpoints List       : " + breakpoints);
@@ -212,7 +212,7 @@ public class CropsAlgorithmTest {
                 double optimalPenalty = crops.getOptimalPenaltyWithKneedle();
                 List<Integer> breakpoints = optimalResult.getChangePoints();
 
-                System.out.println("--- CROPS Spectrum [5.0, 50000.0] ---");
+                System.out.println("--- CROPS [5.0, 50000.0] ---");
                 System.out.println("Optimal Penalty (Beta) : " + optimalPenalty);
                 System.out.println("Breakpoint Count       : " + breakpoints.size());
                 System.out.println("Breakpoints List       : " + breakpoints);
@@ -230,7 +230,7 @@ public class CropsAlgorithmTest {
                 double optimalPenalty = crops.getOptimalPenaltyWithKneedle();
                 List<Integer> breakpoints = optimalResult.getChangePoints();
 
-                System.out.println("--- CROPS Spectrum [10.0, 100000.0] ---");
+                System.out.println("--- CROPS [10.0, 100000.0] ---");
                 System.out.println("Optimal Penalty (Beta) : " + optimalPenalty);
                 System.out.println("Breakpoint Count       : " + breakpoints.size());
                 System.out.println("Breakpoints List       : " + breakpoints);

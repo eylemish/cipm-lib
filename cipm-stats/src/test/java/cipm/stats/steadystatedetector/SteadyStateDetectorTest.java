@@ -1,6 +1,8 @@
 package cipm.stats.steadystatedetector;
 
 import cipm.stats.pelt.PeltResult;
+import cipm.stats.steadystatedetector.experimental.SteadyStateDetector;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

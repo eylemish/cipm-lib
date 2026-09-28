@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import cipm.stats.bootstrapconfidenceintervals.ArmaProcessGenerator;
-import cipm.stats.steadystatedetector.experimental.SteadyStateDetectionPipeline;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +12,17 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for the SteadyStateDetectionPipeline class.
+ * Unit tests for the ClosedFormRatioOfMeansSteadyStateDetectionPipeline class.
  * 
  * @author ezgiyircali
  */
-class SteadyStateDetectionPipelineTest {
+class ClosedFormRatioOfMeansSteadyStateDetectionPipelineTest {
 
-    private SteadyStateDetectionPipeline pipeline;
+    private ClosedFormRatioOfMeansSteadyStateDetectionPipeline pipeline;
 
     @BeforeEach
     void setUp() {
-        pipeline = new SteadyStateDetectionPipeline();
+        pipeline = new ClosedFormRatioOfMeansSteadyStateDetectionPipeline();
     }
 
     @Test
@@ -37,52 +36,45 @@ class SteadyStateDetectionPipelineTest {
         assertTrue(result.getSteadyStateStartIndex() >= 0, "Start index should be valid.");
     }
     
-    
     @Test
-    void testProcessForkWithValidData1() {
-    	
+    void testProcessForkWithValidData500() {
         List<Double> sampleData500 = generate500SampleData();
         SteadyStateResult result500 = pipeline.processFork(sampleData500);
         
         assertNotNull(result500, "Pipeline result should not be null.");
         assertNotNull(result500.getStableMeasurements(), "Stable measurements list should not be null.");
 
-        System.out.println("=== Steady-State Detection Results ===");
-        System.out.println("Is Steady State Reached? : " + result500.isSteadyState());
+        System.out.println("=== Closed-Form Ratio of Means Results (500) ===");
         System.out.println("Steady State Start Index  : " + result500.getSteadyStateStartIndex());
         System.out.println("Total Stable Measurements : " + result500.getStableMeasurements().size());
         if (!result500.getStableMeasurements().isEmpty()) {
             System.out.println("First 5 Stable Values     : " + result500.getStableMeasurements().subList(0, Math.min(5, result500.getStableMeasurements().size())));
         }
-        System.out.println("======================================");
+        System.out.println("==================================================");
     }
     
     @Test
-    void testProcessForkWithValidData2() {
-    	
-        
+    void testProcessForkWithValidData1000() {
         List<Double> sampleData1000 = generate1000SampleData();
         SteadyStateResult result1000 = pipeline.processFork(sampleData1000);
 
         assertNotNull(result1000, "Pipeline result should not be null.");
         assertNotNull(result1000.getStableMeasurements(), "Stable measurements list should not be null.");
 
-        System.out.println("=== Steady-State Detection Results ===");
-        System.out.println("Is Steady State Reached? : " + result1000.isSteadyState());
+        System.out.println("=== Closed-Form Ratio of Means Results (1000) ===");
         System.out.println("Steady State Start Index  : " + result1000.getSteadyStateStartIndex());
         System.out.println("Total Stable Measurements : " + result1000.getStableMeasurements().size());
         if (!result1000.getStableMeasurements().isEmpty()) {
             System.out.println("First 5 Stable Values     : " + result1000.getStableMeasurements().subList(0, Math.min(5, result1000.getStableMeasurements().size())));
         }
-        System.out.println("======================================");
+        System.out.println("===================================================");
     }
 
-  
     private List<Double> generate500SampleData() {
         List<Double> data = new ArrayList<>();
         Random random = new Random(12345);
 
-        // First 200 iterations
+        // First 200 iterations (Warm-up / unstable phase)
         for (int i = 0; i < 200; i++) {
             data.add(100.0 + random.nextDouble() * 50.0);
         }
@@ -130,10 +122,9 @@ class SteadyStateDetectionPipelineTest {
         assertNotNull(result, "Pipeline result should not be null.");
         assertNotNull(result.getStableMeasurements(), "Stable measurements list should not be null.");
 
-        System.out.println("=== ARMA Break Dataset Pipeline Results ===");
-        System.out.println("Is Steady State Reached? : " + result.isSteadyState());
+        System.out.println("=== ARMA Break Dataset Closed-Form RoM Results ===");
         System.out.println("Steady State Start Index  : " + result.getSteadyStateStartIndex());
         System.out.println("Total Stable Measurements : " + result.getStableMeasurements().size());
-        System.out.println("===========================================");
+        System.out.println("===========================================================");
     }
 }
