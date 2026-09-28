@@ -29,14 +29,14 @@ public class StationaryParameterOptimizer {
 		// Computing G (implied bias component) using the flat top window function
 		double gSum = 0;
 		for (int lag = 0; lag < bandwidth; lag++) {
-			gSum += windowFunction(lag, bandwidth) * lag * autocorrelation[lag];
+			gSum += window(lag, bandwidth) * lag * autocorrelation[lag];
 		}
 		double gValue = 2.0 * gSum;
 
 		// Computing D (implied variance component)
 		double dSum = 0;
 		for (int lag = 1; lag < bandwidth; lag++) {
-			dSum += windowFunction(lag, bandwidth) * autocorrelation[lag];
+			dSum += window(lag, bandwidth) * autocorrelation[lag];
 		}
 		double dValue = 2.0 * Math.pow(autocorrelation[0] + 2.0 * dSum, 2.0);
 
@@ -145,11 +145,12 @@ public class StationaryParameterOptimizer {
 	 * @param bandwidth
 	 * @return
 	 */
-	private double windowFunction(double lag, double bandwidth) {
+	private double window(double lag, double bandwidth) {
 		if (lag <= 0.5 * bandwidth) {
 			return 1.0;
 		} else if (lag < bandwidth) {
-			return 2.0 * (1.0 - lag / bandwidth);
+			double ratio = lag / bandwidth;
+			return 2.0 * (1.0 - ratio);
 		} else {
 			return 0.0;
 		}
