@@ -2,8 +2,6 @@ package cipm.stats.bootstrapconfidenceintervals;
 
 import java.util.Random;
 
-//https://github.com/YoshihikoNishikawa/StationaryBootstrap/blob/main/Python/stationary_bootstrap.py
-
 /**
  * Resampler class for Stationary Bootstrap method. It builds pseudo time series
  * by extracting data blocks with random lengths following a geometric

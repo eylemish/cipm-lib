@@ -3,7 +3,7 @@ package cipm.stats.bootstrapconfidenceintervals;
 import java.util.function.ToDoubleFunction;
 
 /**
- * Interface that represents the strategy pettern for calculating the Bootstrap Confidence Intervals.
+ * Interface that represents the strategy pattern for calculating the Bootstrap Confidence Intervals.
  * This interface accommodates both independent data and dependent time series data.
  * @author ezgiyircali
  *

@@ -138,8 +138,7 @@ public class Crops {
 			}
 		}
 
-		// ???Fallback: If all penalties in range produced 0 breakpoints, return the
-		// first result
+		// Fallback: If all penalties in range produced 0 breakpoints, return the first result
 		if (validEntries.isEmpty()) {
 			System.out.println("CROPS Warning: All penalty ranges produced 0 breakpoints. Returning upper boundary.");
 			return entryList.get(0).getValue();

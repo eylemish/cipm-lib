@@ -1,4 +1,4 @@
-package cipm.stats.steadystatedetector;
+package cipm.stats.steadystatedetector.experimental;
 
 import cipm.stats.bootstrapconfidenceintervals.ConfidenceIntervalStrategy;
 
@@ -98,8 +98,9 @@ public class RatioOfMeansCalculator {
 
 	private void resampleHierarchical(List<List<Double>> levels, int currentLevel, List<Double> currentPath,
 			List<Double> simulatedMeans) {
+		
+		
 		if (currentLevel == levels.size()) {
-
 			// In the bottom level, computing the mean of the path and adding it to the
 			// sampled means
 			double sampleMean = currentPath.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);

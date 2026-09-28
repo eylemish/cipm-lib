@@ -1,8 +1,9 @@
-package cipm.stats.steadystatedetector;
+package cipm.stats.steadystatedetector.experimental;
 
 import cipm.stats.bootstrapconfidenceintervals.BcaBootstrapStrategy;
 import cipm.stats.bootstrapconfidenceintervals.ConfidenceIntervalStrategy;
 import cipm.stats.pelt.PeltResult;
+import cipm.stats.steadystatedetector.SteadyStateResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +49,12 @@ public class SteadyStateDetector {
 	 * Detects steady state using Kalibera and Jones (2013) approach over PELT
 	 * segments.
 	 * 
-	 * @originalData Full raw or cleaned data list from a single fork
+	 * @originalData Cleaned data list from a single fork
 	 * @param peltResult Result containing change points from PELT
 	 * @return SteadyStateResult containing classification and stable data range
 	 */
-	public SteadyStateResult evaluate(List<Double> originalData, PeltResult peltResult) {
-		if (originalData == null || originalData.isEmpty() || peltResult == null) {
+	public SteadyStateResult evaluate(List<Double> cleanedData, PeltResult peltResult) {
+		if (cleanedData == null || cleanedData.isEmpty() || peltResult == null) {
 			throw new IllegalArgumentException("Data and PeltResult cannot be null or empty.");
 		}
 
@@ -69,16 +70,16 @@ public class SteadyStateDetector {
 		List<double[]> segments = new ArrayList<>();
 		int startIndex = 0;
 		for (int cp : changePoints) {
-			if (cp > startIndex && cp <= originalData.size()) {
-				double[] segData = originalData.subList(startIndex, cp).stream().mapToDouble(Double::doubleValue)
+			if (cp > startIndex && cp <= cleanedData.size()) {
+				double[] segData = cleanedData.subList(startIndex, cp).stream().mapToDouble(Double::doubleValue)
 						.toArray();
 				segments.add(segData);
 			}
 			startIndex = cp;
 		}
 		// Adding the final segment (sf)
-		if (startIndex < originalData.size()) {
-			double[] finalSeg = originalData.subList(startIndex, originalData.size()).stream()
+		if (startIndex < cleanedData.size()) {
+			double[] finalSeg = cleanedData.subList(startIndex, cleanedData.size()).stream()
 					.mapToDouble(Double::doubleValue).toArray();
 			segments.add(finalSeg);
 		}
@@ -119,8 +120,8 @@ public class SteadyStateDetector {
 
 		// Extracting steady state measurements (Mstable)
 		List<Double> mStable = new ArrayList<>();
-		for (int i = steadyStartIndex; i < originalData.size(); i++) {
-			mStable.add(originalData.get(i));
+		for (int i = steadyStartIndex; i < cleanedData.size(); i++) {
+			mStable.add(cleanedData.get(i));
 		}
 
 		return new SteadyStateResult(steadyReached, steadyStartIndex, mStable);

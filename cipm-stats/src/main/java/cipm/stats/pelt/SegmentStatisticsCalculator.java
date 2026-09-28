@@ -4,6 +4,11 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Computes descriptive statistics (mean, median, standard deviation) or each time series segment defined by change-point boundaries.
+ * @author ezgiyircali
+ *
+ */
 public class SegmentStatisticsCalculator {
 	
 	public static class SegmentSummary {
@@ -21,6 +26,14 @@ public class SegmentStatisticsCalculator {
         }
     }
 	
+	/**
+	 * Calculates descriptive statistics (mean, median, standard deviation) for each 
+	 * time series segment partitioned by the given change-point boundaries.
+	 * 
+	 * @param signal time series data
+	 * @param changePoints detected change-point indices
+	 * @return objects containing the statistical breakdown for each segment
+	 */
 	public List<SegmentSummary> calculateSegmentStats(double[] signal, List<Integer> changePoints) {
         List<SegmentSummary> summaries = new ArrayList<>();
         

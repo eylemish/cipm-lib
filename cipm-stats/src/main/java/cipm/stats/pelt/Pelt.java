@@ -155,7 +155,10 @@ public class Pelt {
 			admissible = nextAdmissible;
 		}
 
-		Map<PeltSegment, Double> bestPartition = new HashMap<PeltSegment, Double>(partitions.get(this.nSamples));
+//		Map<PeltSegment, Double> bestPartition = new HashMap<PeltSegment, Double>(partitions.get(this.nSamples));
+		Map<PeltSegment, Double> bestPartition = new HashMap<PeltSegment, Double>(
+			    partitions.get(this.nSamples) != null ? partitions.get(this.nSamples) : Collections.emptyMap()
+			);
 
 		bestPartition.remove(new PeltSegment(0, 0));
 

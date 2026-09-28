@@ -1,13 +1,18 @@
-package cipm.stats.steadystatedetector;
+package cipm.stats.steadystatedetector.experimental;
 
 import cipm.stats.pelt.PeltResult;
+import cipm.stats.steadystatedetector.OptimalChangepointDetector;
+import cipm.stats.steadystatedetector.OutliersFiltering;
+import cipm.stats.steadystatedetector.SteadyStateResult;
+
 import java.util.List;
 
 /**
- * Pipeline class for the steady-state detection process. 
- * 1. Filters outliers using Tukey's method (OutliersFiltering). 
- * 2. Detects optimal change points using PELT/CROPS (OptimalChangepointDetector). 
- * 3. Evaluates segments using Kalibera and Jones %5 rule to find the steady-state starting point (SteadyStateDetector).
+ * Pipeline class for the steady-state detection process. 1. Filters outliers
+ * using Tukey's method (OutliersFiltering). 2. Detects optimal change points
+ * using PELT/CROPS (OptimalChangepointDetector). 3. Evaluates segments using
+ * Kalibera and Jones %5 rule to find the steady-state starting point
+ * (SteadyStateDetector).
  * 
  * @author ezgiyircali
  */
@@ -18,7 +23,8 @@ public class SteadyStateDetectionPipeline {
 	private final SteadyStateDetector steadyStateDetector;
 
 	/**
-	 * Constructs a new SteadyStateDetectionPipeline instance with default components.
+	 * Constructs a new SteadyStateDetectionPipeline instance with default
+	 * components.
 	 */
 	public SteadyStateDetectionPipeline() {
 		this.outliersFiltering = new OutliersFiltering();
@@ -28,8 +34,9 @@ public class SteadyStateDetectionPipeline {
 
 	/**
 	 * * Constructs a new SteadyStateDetectionPipeline with custom components.
-	 * @param outliersFiltering The outlier filtering component
-	 * @param changepointDetector The  optimal change-point detector component
+	 * 
+	 * @param outliersFiltering   The outlier filtering component
+	 * @param changepointDetector The optimal change-point detector component
 	 * @param steadyStateDetector The steady-state detector component
 	 */
 	public SteadyStateDetectionPipeline(OutliersFiltering outliersFiltering,
@@ -60,4 +67,5 @@ public class SteadyStateDetectionPipeline {
 
 		return result;
 	}
+
 }
