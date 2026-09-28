@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class ClosedFormRatioOfMeansSteadyStateDetector {
 
+	/**
+	 * Detects steady state using Kalibera and Jones (2013) Ratio of Means(Closed Form) approach over PELT segments.
+	 * 
+	 * @param cleanedData  Cleaned data list from a single fork
+	 * @param peltResult Result containing change points from PELT
+	 * @return SteadyStateResult containing classification and stable data range
+	 */
     public SteadyStateResult evaluate(List<Double> cleanedData, PeltResult peltResult) {
         if (cleanedData == null || cleanedData.isEmpty() || peltResult == null) {
             throw new IllegalArgumentException("Data and PeltResult cannot be null or empty.");

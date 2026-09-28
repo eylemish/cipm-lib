@@ -2,8 +2,6 @@ package cipm.stats.bootstrapconfidenceintervals;
 
 import org.apache.commons.math3.stat.StatUtils;
 
-// https://github.com/YoshihikoNishikawa/StationaryBootstrap/blob/main/Python/stationary_bootstrap.pyxs
-
 /**
  * Estimates the optimal p-parameter (p_opt) for the Stationary Bootstrap.
  * 
@@ -136,7 +134,7 @@ public class StationaryParameterOptimizer {
 			}
 		}
 
-		// Python code returns 2 * bandwidth
+		// 2 * bandwidth
 		return Math.max(2, 2 * bandwidth);
 	}
 

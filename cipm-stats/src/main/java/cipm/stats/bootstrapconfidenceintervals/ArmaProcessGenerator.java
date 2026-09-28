@@ -69,7 +69,7 @@ public class ArmaProcessGenerator {
 		double[] x = new double[totalLength];
 		double[] epsilon = new double[totalLength];
 
-		// Apache Commons Math distribution initialized with seed
+		// Distribution initialized with seed
 		NormalDistribution noiseDist = new NormalDistribution(0, sigma);
 		noiseDist.reseedRandomGenerator(random.nextLong());
 
@@ -93,7 +93,7 @@ public class ArmaProcessGenerator {
 			x[t] = c + arTerm + epsilon[t] + maTerm;
 		}
 
-		// Extract final 'n' elements after burn-in
+		// Extract final n elements
 		double[] result = new double[n];
 		System.arraycopy(x, burnIn, result, 0, n);
 
@@ -101,7 +101,7 @@ public class ArmaProcessGenerator {
 	}
 
 	/**
-	 * Generate a time series with a synthetic break (Change-Point).
+	 * Generating a time series with a synthetic break (Change-Point).
 	 * Useful for testing PELT/CROPS on auto-correlated data.
 	 * 
 	 * @param n          Total length
