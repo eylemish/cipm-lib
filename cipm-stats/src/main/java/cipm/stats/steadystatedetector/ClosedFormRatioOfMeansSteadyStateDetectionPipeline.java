@@ -1,6 +1,8 @@
 package cipm.stats.steadystatedetector;
 
 import cipm.stats.pelt.PeltResult;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,12 +53,19 @@ public class ClosedFormRatioOfMeansSteadyStateDetectionPipeline {
 
 		// Step 1: Filtering outliers using Tukey's method
 		List<Double> cleanedData = outliersFiltering.filter(measurementData);
+		
+		List<Double> validDataList = new ArrayList<>();
+		for (Double value : cleanedData) {
+			if (value != null && !Double.isNaN(value)) {
+				validDataList.add(value);
+			}
+		}
 
 		// Step 2-4: Detecting optimal change points on cleaned data
-		PeltResult peltResult = changepointDetector.detect(cleanedData);
+		PeltResult peltResult = changepointDetector.detect(validDataList);
 
 		// Step 5: Evaluating segments on cleaned data using Closed-Form Ratio of Means detector
-		SteadyStateResult result = ratioOfMeansSteadyStateDetector.evaluate(cleanedData, peltResult);
+		SteadyStateResult result = ratioOfMeansSteadyStateDetector.evaluate(validDataList, peltResult);
 
 		return result;
 	}

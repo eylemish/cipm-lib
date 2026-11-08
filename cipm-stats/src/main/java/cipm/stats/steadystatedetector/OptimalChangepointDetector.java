@@ -22,7 +22,8 @@ public class OptimalChangepointDetector {
 	private final double maxPenalty;
 
 	/**
-	 * Constructs a new OptimalChangepointDetector with default parameters(based on LucaTraini 2022)
+	 * Constructs a new OptimalChangepointDetector with default parameters(based on
+	 * LucaTraini 2022)
 	 */
 	public OptimalChangepointDetector() {
 		this.windowSize = 200;
@@ -47,33 +48,19 @@ public class OptimalChangepointDetector {
 	 * Executes the CROPS, Kneedle, and PELT pipeline on the cleaned time
 	 * seriesdata.
 	 * 
-	 * @param cleanedData Data cleaned from outliers (where outliers are Double.NaN)
+	 * @param validData Data cleaned from outliers (where outliers are removed)
 	 * @return PeltResult containing the optimal change points and total cost
 	 */
-	public PeltResult detect(List<Double> cleanedData) {
+	public PeltResult detect(List<Double> validData) {
 
-		if (cleanedData == null || cleanedData.isEmpty()) {
+		if (validData == null || validData.isEmpty()) {
 			throw new IllegalArgumentException("Cleaned data cannot be null or empty.");
 		}
 
 		// Converting List<Double> to 2D signal array for PELT.
-		double[][] signal = new double[cleanedData.size()][1];
-		double lastValidValue = 0.0;
-
-		// Finding initial fallback value if series starts with NaN
-		for (Double val : cleanedData) {
-			if (val != null && !Double.isNaN(val)) {
-				lastValidValue = val;
-				break;
-			}
-		}
-
-		for (int i = 0; i < cleanedData.size(); i++) {
-			Double val = cleanedData.get(i);
-			if (val != null && !Double.isNaN(val)) {
-				lastValidValue = val;
-			}
-			signal[i][0] = lastValidValue;
+		double[][] signal = new double[validData.size()][1];
+		for (int i = 0; i < validData.size(); i++) {
+			signal[i][0] = validData.get(i);
 		}
 
 		// Initializing PELT and CROPS
